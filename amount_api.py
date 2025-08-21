@@ -1,14 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
+# Fungsi terbilang
 def terbilang(n):
     angka = ["", "satu", "dua", "tiga", "empat", "lima",
              "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"]
     n = int(n)
 
     if n == 0:
-        return ""
+        return "nol"
     elif n < 12:
         return angka[n]
     elif n < 20:
@@ -32,6 +33,12 @@ def terbilang(n):
     else:
         return "Angka terlalu besar"
 
+# ---------------- API ----------------
+
+@app.route('/')
+def home():
+    return render_template('docs.html')
+
 @app.route('/terbilang', methods=['GET'])
 def convert():
     angka = request.args.get('angka', default='0', type=int)
@@ -43,4 +50,4 @@ def convert():
     })
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, debug=True)

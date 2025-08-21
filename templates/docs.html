@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>📘 Dokumentasi API Terbilang</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .endpoint { background: #e6ffed; border-left: 5px solid #2ecc71; padding: 10px; font-family: monospace; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    input, button { padding: 8px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📘 Dokumentasi API Terbilang</h1>
+
+  <div class="card">
+    <h2>1. Terbilang</h2>
+    <p>Mengubah angka menjadi format terbilang rupiah.</p>
+
+    <p><b>Endpoint</b></p>
+    <div class="endpoint">GET /terbilang?angka=1234</div>
+
+    <p><b>Response</b></p>
+    <pre>{
+  "angka": 1234,
+  "terbilang": "seribu dua ratus tiga puluh empat rupiah"
+}</pre>
+
+    <h3>🔎 Coba Sendiri</h3>
+    <input type="number" id="angka" placeholder="Masukkan angka">
+    <button onclick="cekTerbilang()">Konversi</button>
+    <pre id="hasil"></pre>
+  </div>
+
+  <script>
+    async function cekTerbilang() {
+      const angka = document.getElementById("angka").value;
+      if (!angka) return alert("Masukkan angka dulu");
+      const res = await fetch(`/terbilang?angka=${angka}`);
+      const data = await res.json();
+      document.getElementById("hasil").textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
