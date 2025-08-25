@@ -1,46 +1,302 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>📘 Dokumentasi API Terbilang</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
-    .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-    .endpoint { background: #e6ffed; border-left: 5px solid #2ecc71; padding: 10px; font-family: monospace; }
-    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
-    input, button { padding: 8px; margin-top: 10px; }
+    :root{
+      --bg: #0b1020;
+      --card: #0f1629;
+      --muted: #98a2b3;
+      --txt: #e6e9ef;
+      --brand: #4f46e5;
+      --brand-2: #22d3ee;
+      --ok: #16a34a;
+      --warn:#f59e0b;
+      --error:#ef4444;
+      --code:#0b1220;
+      --border: #1e293b;
+      --shadow: 0 10px 30px rgba(2,8,23,.25);
+      --ring: 0 0 0 3px rgba(34,211,238,.25);
+      --input: #0b1220;
+    }
+    [data-theme="light"]{
+      --bg:#f7f8fb; --card:#ffffff; --txt:#0f172a; --muted:#6b7280;
+      --code:#0f172a; --input:#f3f4f6; --border:#e5e7eb; --shadow: 0 10px 30px rgba(2,8,23,.08);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -20%, rgba(79,70,229,.15), transparent 60%),
+                  radial-gradient(900px 500px at 120% 0%, rgba(34,211,238,.18), transparent 60%),
+                  var(--bg);
+      color:var(--txt);
+      min-height:100dvh;
+    }
+
+    .container{max-width:980px;margin:0 auto;padding:28px 20px 56px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-bottom:22px;
+    }
+    .title{
+      display:flex;align-items:center;gap:14px;
+      font-weight:800;font-size:22px;letter-spacing:.2px
+    }
+    .badge{
+      padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--brand),var(--brand-2));
+      color:white;font-size:12px;font-weight:700;box-shadow:var(--shadow)
+    }
+    .actions{display:flex;gap:10px}
+    .btn{
+      appearance:none;border:1px solid var(--border);background:var(--card);color:var(--txt);
+      padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer;transition:.2s;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+    .btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand-2));border:none;color:white}
+    .btn.ghost{background:transparent}
+
+    .card{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;
+      padding:22px;box-shadow:var(--shadow);margin-bottom:18px;
+    }
+    .endpoint{background:rgba(34,211,238,.12);border-left:4px solid var(--brand-2);
+      padding:10px 12px;border-radius:8px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}}
+
+    .h2{margin:0 0 8px;font-size:18px}
+    .muted{color:var(--muted)}
+    pre,code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space:pre-wrap;word-break:break-word;
+    }
+    pre{
+      background:linear-gradient(180deg,rgba(2,8,23,.08),transparent),
+                 var(--input);
+      border:1px solid var(--border);border-radius:14px;
+      padding:14px;margin:0;max-height:340px;overflow:auto;
+    }
+
+    .input-row{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap
+    }
+    .field{
+      display:flex;align-items:center;gap:8px;background:var(--input);
+      border:1px solid var(--border);border-radius:12px;padding:10px 12px;min-width:220px;flex:1;
+    }
+    .field input{
+      all:unset;width:100%;font-variant-numeric:tabular-nums
+    }
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .chip{padding:6px 10px;border:1px dashed var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+
+    .ok{color:var(--ok);font-weight:700}
+    .warn{color:var(--warn);font-weight:700}
+    .err{color:var(--error);font-weight:700}
+
+    footer{margin-top:26px;color:var(--muted);font-size:13px;text-align:center}
+    .kbd{padding:2px 6px;border:1px solid var(--border);border-radius:6px;background:var(--card);font-family:inherit}
   </style>
 </head>
 <body>
-  <h1>📘 Dokumentasi API Terbilang</h1>
+  <div class="container">
+    <header>
+      <div class="title">
+        <span style="font-size:24px">🧮</span>
+        <div>
+          <div>API Terbilang</div>
+          <div class="muted" style="font-size:12px">Ubah angka → teks rupiah</div>
+        </div>
+        <span class="badge">v1</span>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" id="toggleTheme">🌗&nbsp;Theme</button>
+        <a class="btn primary" href="/terbilang?angka=1234" target="_blank" rel="noopener">Coba Cepat</a>
+      </div>
+    </header>
 
-  <div class="card">
-    <h2>1. Terbilang</h2>
-    <p>Mengubah angka menjadi format terbilang rupiah.</p>
+    <!-- Kartu Endpoints + Playground -->
+    <div class="card">
+      <div class="grid">
+        <section>
+          <h2 class="h2">1) Endpoint</h2>
+          <p class="muted">Mengubah angka menjadi teks rupiah.</p>
+          <div class="endpoint">GET&nbsp;&nbsp;/terbilang?angka=<b>1234</b></div>
 
-    <p><b>Endpoint</b></p>
-    <div class="endpoint">GET /terbilang?angka=1234</div>
-
-    <p><b>Response</b></p>
-    <pre>{
+          <div style="height:12px"></div>
+          <div class="muted" style="font-size:13px">Contoh respons</div>
+          <pre id="example">
+{
   "angka": 1234,
   "terbilang": "seribu dua ratus tiga puluh empat rupiah"
-}</pre>
+}
+          </pre>
 
-    <h3>🔎 Coba Sendiri</h3>
-    <input type="number" id="angka" placeholder="Masukkan angka">
-    <button onclick="cekTerbilang()">Konversi</button>
-    <pre id="hasil"></pre>
+          <div style="height:14px"></div>
+          <div class="muted" style="font-size:13px">cURL</div>
+          <pre id="curl">curl "{{origin}}/terbilang?angka=1234"</pre>
+        </section>
+
+        <section>
+          <h2 class="h2">🔎 Playground</h2>
+          <div class="input-row">
+            <label class="field" title="Masukkan angka non-negatif">
+              <span>🔢</span>
+              <input id="angka" type="number" min="0" placeholder="Masukkan angka (mis. 150000)" />
+            </label>
+            <button class="btn primary" id="btnRun">Konversi</button>
+            <button class="btn" id="btnReset">Reset</button>
+            <button class="btn" id="btnCopy">Copy URL</button>
+          </div>
+          <div class="chips">
+            <button class="chip" data-sample="0">0</button>
+            <button class="chip" data-sample="12">12</button>
+            <button class="chip" data-sample="45">45</button>
+            <button class="chip" data-sample="1234">1234</button>
+            <button class="chip" data-sample="1000000">1000000</button>
+          </div>
+
+          <div style="height:12px"></div>
+          <div class="muted" style="font-size:13px">Hasil</div>
+          <pre id="hasil">{ belum ada data }</pre>
+
+          <div style="height:12px"></div>
+          <div class="muted" style="font-size:13px">Riwayat (5 terakhir)</div>
+          <pre id="riwayat">-</pre>
+        </section>
+      </div>
+    </div>
+
+    <!-- Status & Tips -->
+    <div class="card">
+      <h2 class="h2">Status & Tips</h2>
+      <div id="status">Memeriksa server…</div>
+      <ul class="muted">
+        <li>Tekan <span class="kbd">Ctrl</span> + <span class="kbd">L</span> untuk fokus address bar, lalu paste URL yang sudah di-copy.</li>
+        <li>Dashboard ngrok (inspector): <code>http://127.0.0.1:4040</code> untuk melihat request masuk & replay.</li>
+      </ul>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Terbilang API · Dibuat dengan ❤️ dan sedikit gradien.
+    </footer>
   </div>
 
   <script>
-    async function cekTerbilang() {
-      const angka = document.getElementById("angka").value;
-      if (!angka) return alert("Masukkan angka dulu");
-      const res = await fetch(`/terbilang?angka=${angka}`);
-      const data = await res.json();
-      document.getElementById("hasil").textContent = JSON.stringify(data, null, 2);
+    const els = {
+      angka: document.getElementById('angka'),
+      btnRun: document.getElementById('btnRun'),
+      btnReset: document.getElementById('btnReset'),
+      btnCopy: document.getElementById('btnCopy'),
+      hasil: document.getElementById('hasil'),
+      riwayat: document.getElementById('riwayat'),
+      curl: document.getElementById('curl'),
+      status: document.getElementById('status'),
+      toggleTheme: document.getElementById('toggleTheme')
+    };
+
+    const ORIGIN = location.origin;
+    const HISTORY_KEY = 'terbilang-history-v1';
+
+    function setStatus(text, cls=''){
+      els.status.innerHTML = text;
+      els.status.className = cls;
     }
+
+    async function healthCheck(){
+      try{
+        const res = await fetch('/', {method:'GET'});
+        setStatus(`Server <span class="ok">ONLINE</span> • ${ORIGIN}`);
+      }catch(e){
+        setStatus(`Server <span class="err">OFFLINE</span> • Pastikan Flask & ngrok berjalan`, 'err');
+      }
+    }
+
+    function updateCurl(n){
+      els.curl.textContent = `curl "${ORIGIN}/terbilang?angka=${n||1234}"`;
+    }
+
+    function saveHistory(item){
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      list.unshift(item);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0,5)));
+      renderHistory();
+    }
+
+    function renderHistory(){
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      if(!list.length){ els.riwayat.textContent = '-'; return; }
+      els.riwayat.textContent = list.map((x,i)=>`${i+1}. ${x.url} → ${x.terbilang}`).join('\n');
+    }
+
+    async function run(){
+      const n = (els.angka.value || '').trim();
+      if(n === '' || Number(n) < 0){ alert('Masukkan angka >= 0'); return; }
+      const url = `${ORIGIN}/terbilang?angka=${encodeURIComponent(n)}`;
+      try{
+        const res = await fetch(url);
+        const data = await res.json();
+        els.hasil.textContent = JSON.stringify(data, null, 2);
+        saveHistory({ url, terbilang: data.terbilang });
+      }catch(e){
+        els.hasil.textContent = `Gagal mengambil data:\n${e}`;
+      }
+      updateCurl(n);
+    }
+
+    function copyUrl(){
+      const n = (els.angka.value || '1234').trim();
+      const url = `${ORIGIN}/terbilang?angka=${encodeURIComponent(n)}`;
+      navigator.clipboard.writeText(url).then(()=>{
+        els.btnCopy.textContent = 'Copied!';
+        setTimeout(()=>els.btnCopy.textContent='Copy URL', 900);
+      });
+    }
+
+    // Chips sample
+    document.querySelectorAll('.chip').forEach(ch => {
+      ch.addEventListener('click', ()=>{
+        els.angka.value = ch.dataset.sample;
+        updateCurl(ch.dataset.sample);
+      });
+    });
+
+    // Events
+    els.btnRun.addEventListener('click', run);
+    els.btnReset.addEventListener('click', ()=>{
+      els.angka.value = '';
+      els.hasil.textContent = '{ belum ada data }';
+      updateCurl(1234);
+    });
+    els.btnCopy.addEventListener('click', copyUrl);
+    els.angka.addEventListener('input', e => updateCurl(e.target.value));
+    els.angka.addEventListener('keydown', e => { if(e.key === 'Enter') run(); });
+
+    // Theme toggle
+    els.toggleTheme.addEventListener('click', ()=>{
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme-terbilang', next);
+    });
+
+    // init
+    (()=>{
+      const savedTheme = localStorage.getItem('theme-terbilang');
+      if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+      updateCurl(1234);
+      renderHistory();
+      healthCheck();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
   </script>
 </body>
 </html>
